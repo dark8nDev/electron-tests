@@ -7,3 +7,7 @@ const func = async () => {
 }
 
 func()
+
+document.getElementById('openBtn').addEventListener('click', () => {
+        window.versions.openSecond()
+      });
