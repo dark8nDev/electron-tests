@@ -1,23 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
     />
     <meta
       http-equiv="X-Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
-    />
-    <title>Hello from Electron renderer!</title>
+    /> -->
+    <title>Electron + React</title>
   </head>
   <body>
-    <h1>Hello from Electron renderer!</h1>
-    <p>👋</p>
-    <p id="info"></p>
-
-    <button id="openBtn">Open Second Window</button>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    
   </body>
-  <script src="./renderer.js"></script>
 </html>

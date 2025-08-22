@@ -15,7 +15,7 @@ const createWindow = () => {
         }
     })
 
-    mainWindow.loadFile('index.html')
+    mainWindow.loadURL('http://localhost:5173')
 
     mainWindow.on('closed', () => {
         mainWindow = null;
