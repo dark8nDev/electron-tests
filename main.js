@@ -2,11 +2,11 @@ const { app, BrowserWindow, ipcMain } = require('electron/main')
 const path = require('node:path')
 
 let mainWindow;
-let secondWindow;
+let probability;
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({
-    width: 800,
+    width: 1000,
     height: 600,
     webPreferences: {
         preload: path.join(__dirname, 'preload.js'),
@@ -16,39 +16,14 @@ const createWindow = () => {
     })
 
     mainWindow.loadURL('http://localhost:5173')
+    mainWindow.webContents.toggleDevTools()
 
     mainWindow.on('closed', () => {
         mainWindow = null;
     });
 }
 
-function createSecondWindow() {
-  if (secondWindow) {
-    secondWindow.focus();
-    return;
-  }
-
-  secondWindow = new BrowserWindow({
-    width: 400,
-    height: 300,
-    title: 'Second Window',
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-  });
-
-  secondWindow.loadFile('second.html');
-
-  secondWindow.on('closed', () => {
-    secondWindow = null;
-  });
-}
-
-
 app.whenReady().then(() => {
-  ipcMain.handle('ping', () => 'pong')
-
   createWindow()
 
   app.on('activate', () => {
@@ -56,11 +31,11 @@ app.whenReady().then(() => {
       createWindow()
     }
   })
-})
 
-ipcMain.on('open-second-window', () => {
-  createSecondWindow();
-});
+  ipcMain.handle('get-random', () => Math.random())
+  ipcMain.on('make-prob', () => {probability = Math.random(); console.log(probability)})
+  ipcMain.handle('fetch-prob', () => probability)
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
