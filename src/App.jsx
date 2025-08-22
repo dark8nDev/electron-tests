@@ -1,14 +1,20 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'
+import Navbar from './NavBar';
+import Home from './Home';
+import About from './About';
 
 function App() {
   return (
-    <>
-      <h1>Hello from Electron renderer!</h1>
-      <p>👋</p>
-      <p id="info"></p>
-
-      <button id="openBtn" onClick={() => versions.openSecond()}>Open Second Window</button>
-    </>
+    <Router>
+      <Navbar/>
+      <div style={{ padding: '20px' }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </div>
+    </Router>
   )
 }
 
