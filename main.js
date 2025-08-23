@@ -1,8 +1,11 @@
-const { app, BrowserWindow, ipcMain } = require('electron/main')
-const path = require('node:path')
+import { app, BrowserWindow, ipcMain } from 'electron/main'
+import { fileURLToPath } from "url";
+import path from 'node:path'
 
 let mainWindow;
 let probability;
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({
