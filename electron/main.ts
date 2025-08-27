@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron/main'
 import { fileURLToPath } from "url";
 import path from 'node:path'
 
-import { getPort } from './serial.js';
+import { getPort } from './serial.ts';
 
 let mainWindow;
 let probability;
@@ -16,7 +16,7 @@ const createWindow = () => {
     width: 1000,
     height: 600,
     webPreferences: {
-        preload: path.join(__dirname, 'preload.js'),
+        preload: path.join(__dirname, 'preload.ts'),
         // nodeIntegration: true, // for simplicity
         // contextIsolation: false,
         }
