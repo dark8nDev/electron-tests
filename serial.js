@@ -1,17 +1,13 @@
-import { SerialPortStream } from '@serialport/stream'
-import { MockBinding } from '@serialport/binding-mock'
+import { SerialPort, ReadlineParser } from "serialport";
 
-MockBinding.createPort('/dev/ROBOT', { echo: true, record: true })
-const port = new SerialPortStream({ binding: MockBinding, path: '/dev/ROBOT', baudRate: 14400 })
-
-port.on('open', () => {
-  console.log("OPEN")
+const port = new SerialPort({
+  path: "COM3",
+  baudRate: 9600 
 })
 
-port.on("error", (err) => {
-  console.err("Erro de puerto")
-})
+const parser = port.pipe(new ReadlineParser({ delimiter: '\n', encoding: 'utf8' }));
+// const parser = port.pipe(new ReadlineParser())
 
-export function serialPort() {
-  return port
+export function getPort() {
+  return parser
 }

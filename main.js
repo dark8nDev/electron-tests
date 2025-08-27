@@ -2,12 +2,12 @@ import { app, BrowserWindow, ipcMain } from 'electron/main'
 import { fileURLToPath } from "url";
 import path from 'node:path'
 
-import { serialPort } from './serial.js';
+import { getPort } from './serial.js';
 
 let mainWindow;
 let probability;
 
-let port = serialPort()
+const port = getPort()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -44,18 +44,8 @@ app.whenReady().then(() => {
   ipcMain.handle('fetch-prob', () => probability)
 
   port.on("data", (data) => {
-    mainWindow.webContents.send("serial-data", data.toString())
+    mainWindow.webContents.send("serial-data", data)
   })
-
-  setInterval(
-    () => {
-      port.write(`${Date.now()}`, (err) => {
-        if (err) {
-          console.error("FALLO")
-        }
-      })
-    }, 2000
-  )
 })
 
 app.on('window-all-closed', () => {
