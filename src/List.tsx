@@ -1,8 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function List() {
-  const options = ["Apple", "Banana", "Cherry", "Orange"]; // your list
+  const [ports, setPorts] = useState([])
   const [selected, setSelected] = useState([]); // store selected items
+
+  useEffect(() => {
+    getAllPorts()
+  }, [])
+
+  const getAllPorts = async () => {
+    const portsList = await window.backend.getAllPorts();
+    setPorts(portsList)
+    setSelected([])
+  }
+
+  const savePorts = () => {
+    if (selected.length) {
+      selected.map(port => window.backend.createPort(port))
+    } else {
+      console.log("No ports selected")
+    }
+  }
+
+  const getConnections = async () => {
+    console.log(
+      await window.backend.getConnections()
+    )
+  }
 
   const handleChange = (event) => {
     const { value, checked } = event.target;
@@ -17,26 +41,25 @@ export default function List() {
   };
 
   return (
-    <>
-      <div className="p-4">
-        <h2 className="text-lg font-bold mb-2">Pick your fruits:</h2>
-        {options.map((item) => (
-          <label key={item} className="block">
+    <>      
+      <div className="ports-list">
+        <h2>Lista de Puertos</h2>
+        {ports.map(port => (
+          <label key={port.path}>
             <input
               type="checkbox"
-              value={item}
+              value={port.path}
               onChange={handleChange}
-              checked={selected.includes(item)}
+              checked={selected.includes(port.path)}
             />
-            {item}
+            {port.path}
           </label>
         ))}
-
-        <div className="mt-4">
-          <h3 className="font-semibold">Selected:</h3>
-          <pre>{JSON.stringify(selected, null, 2)}</pre>
-        </div>
       </div>
+
+      <button onClick={() => getAllPorts()}>Puertos</button>
+      <button onClick={() => savePorts()}>Conectar</button>
+      <button onClick={() => getConnections()}>Conexiones</button>
     </>
   )
 }

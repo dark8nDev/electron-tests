@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron/main'
 import { fileURLToPath } from "url";
 import path from 'node:path'
 
-import { getPort } from './serial.ts';
+import { getPort, getAllPorts, createPort, getConections } from './serial.ts';
 
 let mainWindow;
 let probability;
@@ -42,6 +42,9 @@ app.whenReady().then(() => {
   ipcMain.handle('get-random', () => Math.random())
   ipcMain.on('make-prob', () => {probability = Math.random(); console.log(probability)})
   ipcMain.handle('fetch-prob', () => probability)
+  ipcMain.handle('ports-list', async () => await getAllPorts())
+  ipcMain.handle('create-port', (event, path) => createPort(path))
+  ipcMain.handle('connections', async () => await getConections())
 
   port.on("data", (data) => {
     mainWindow.webContents.send("serial-data", data)
